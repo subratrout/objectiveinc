@@ -25,5 +25,14 @@
   <%= @applicant.job %>
 </p>
 
+<p>
+  <strong>Skills</strong>
+</p>
+<ul>
+  <%= @skills.each do |skill| %>
+  <li><%= skill.name %></li>
+  <% end %>
+</ul>
+
 <%= link_to 'Edit', edit_applicant_path(@applicant) %> |
 <%= link_to 'Back', applicants_path %>

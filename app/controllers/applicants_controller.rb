@@ -4,12 +4,16 @@ class ApplicantsController < ApplicationController
   # GET /applicants
   # GET /applicants.json
   def index
+    @skills = Skill.uniq.pluck(:name)
+    @jobs = Job.includes(applicants: :skills)
     @applicants = Applicant.all
   end
 
   # GET /applicants/1
   # GET /applicants/1.json
   def show
+    @applicant = Applicant.find(params[:id])
+    @skills = @applicant.skills
   end
 
   # GET /applicants/new

@@ -2,34 +2,40 @@
 
 <h1>Applicants</h1>
 
-<table>
+<table border="1px" padding="0">
   <thead>
     <tr>
+      <th>Job</th>
       <th>Name</th>
       <th>Email</th>
       <th>Website</th>
-      <th>Cover letter</th>
-      <th>Job</th>
-      <th colspan="3"></th>
+      <th>Skills</th>
+      <th>Cover letter Paragraph</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @applicants.each do |applicant| %>
+    <% @jobs.each do |job| %>
       <tr>
-        <td><%= applicant.name %></td>
-        <td><%= applicant.email %></td>
-        <td><%= applicant.website %></td>
-        <td><%= applicant.cover_letter %></td>
-        <td><%= applicant.job %></td>
-        <td><%= link_to 'Show', applicant %></td>
-        <td><%= link_to 'Edit', edit_applicant_path(applicant) %></td>
-        <td><%= link_to 'Destroy', applicant, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td rowspan="<%= job.skills_count %>" class="job-name"><%= job.name %></td>
+        <% job.applicants.each do |applicant| %>
+          <td rowspan="<%= applicant.skills.size %>" class="applicant-name"><%= applicant.name %></td>
+          <td rowspan="<%= applicant.skills.size %>"><a href="mailto:<%= applicant.email %>"><%= applicant.email %></a></td>
+          <td rowspan="<%= applicant.skills.size %>"><%= link_to applicant.website, "http://#{applicant.website}" %></td>
+          <td><%= applicant.skills.first.name %></td>
+          <td rowspan="<%= applicant.skills.size %>"><%= applicant.cover_letter %></td>
       </tr>
+        <% applicant.skills[1..-1].each do |skill| %>
+          <tr>
+            <td><%= skill.name %></td>
+          </tr>
+        <% end %>
+      <% end %>
     <% end %>
   </tbody>
+  <tfoot>
+    <tr >
+      <td colspan="6"><%= @applicants.size %> Applicants, <%= @skills.size %> Unique Skills</td>
+    </tr>
+  </tfoot> 
 </table>
-
-<br>
-
-<%= link_to 'New Applicant', new_applicant_path %>
