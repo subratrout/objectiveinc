@@ -4,9 +4,9 @@ class ApplicantsController < ApplicationController
   # GET /applicants
   # GET /applicants.json
   def index
-    @skills = Skill.uniq.pluck(:name)
     @jobs = Job.includes(applicants: :skills)
-    @applicants = Applicant.all
+    @skills = Skill.distinct.pluck(:name)
+    @applicants = Applicant.count
   end
 
   # GET /applicants/1
